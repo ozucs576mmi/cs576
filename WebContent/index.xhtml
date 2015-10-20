@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xml:lang="tr" lang="tr">
+
+<f:view locale="tr">
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Test</title>
+		<style type="text/css">
+		</style>
+		<script type="text/javascript">
+		</script>
+	</h:head>
+	<h:body>
+		
+
+		<h:form id="form">		
+			<p:growl id="growl" life="4000" />	
+			<p:outputPanel style=" margin-top:100px; margin-left:100px; ">
+				<p:inputText id="name" value="#{testBean.test}"/>
+			</p:outputPanel>						
+			<p:commandButton value="Get Similar" id="CallWsButton" update="infoDialogPopUp" actionListener="#{testBean.action}" styleClass="ui-priority-primary" />
+			
+			
+			<p:dialog styleClass="infoDialog" width="450" height="120" header="" widgetVar="infoDialogWidget" modal="true" position="150,100"
+				resizable="false" id="infoDialogPopUp">
+				
+				<h:panelGrid id="modalPanel" columns="1" >	
+					<h:outputFormat id="resultMessageOutputId" value="#{testBean.resultMessage}" escape="false" style="font-weight:bold" />
+				</h:panelGrid>
+				
+				<h:panelGrid id="modalClosePanel" columns="1" >	
+					<p:commandButton styleClass="button-type3" id="CloseModel" style="margin-left:150px;"
+						value="Close" oncomplete="infoDialogWidget.hide()" />
+				</h:panelGrid>
+			</p:dialog>	
+		</h:form>
+	</h:body>
+</f:view>
+
+</html>
+
+
