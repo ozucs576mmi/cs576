@@ -1,2 +1,6 @@
 .settings/org.jboss.ide.eclipse.as.core.prefs
 *.xml
+.settings/org.eclipse.wst.common.component
+*.component
+.settings/org.eclipse.wst.common.project.facet.core.xml
+.settings/org.eclipse.wst.common.component
