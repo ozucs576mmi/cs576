@@ -28,11 +28,19 @@ public class TestBean implements Serializable{
 		
 		AsYouMeanResult asYouMeanResult = AsYouMeanUtil.getInstance().getAsYouMeanResult(test);
 		
+		if(test.isEmpty()){
+			
+			resultMessage = "Lutfen bir Keyword giriniz..!";
+			RequestContext context = RequestContext.getCurrentInstance();
+			context.execute("infoDialogWidget.show()");
+		}else{
+		
 		resultMessage = "Input: " + test + "<br/>" + asYouMeanResult.toString();
 		
 		RequestContext context = RequestContext.getCurrentInstance();
 		context.execute("infoDialogWidget.show()");
 	//	addMessage("input: " + test + " " + asYouMeanResult.toString());
+		}
 	}
 
 	public String getTest() {

@@ -6,6 +6,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
+import com.agile.asyoumean.model.externalmodel.AsYouMeanRequestExeption;
 import com.agile.asyoumean.model.externalmodel.AsYouMeanResult;
 import com.agile.asyoumean.util.AsYouMeanUtil;
 
@@ -17,8 +18,15 @@ public class AsYouMeanImpl {
 
 	@WebMethod
 	@WebResult(name = "AsYouMeanResult")
-	public AsYouMeanResult getAsYouMean(@WebParam(name = "keyword" ) String keyword){
+	public AsYouMeanResult getAsYouMean(@WebParam(name = "keyword" ) String keyword)throws AsYouMeanRequestExeption{
+		if(keyword.isEmpty()){
+			
+			 throw new AsYouMeanRequestExeption("Request cannot be null", "Request cannot be null");
+			
+		}else{
+			return AsYouMeanUtil.getInstance().getAsYouMeanResult(keyword);	
+			
+		}
 		
-		return AsYouMeanUtil.getInstance().getAsYouMeanResult(keyword);
 	}
 }
