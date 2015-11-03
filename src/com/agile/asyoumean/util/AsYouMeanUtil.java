@@ -15,10 +15,8 @@ public class AsYouMeanUtil {
 	
 	public AsYouMeanResult getAsYouMeanResult(String keyword){
 		
-		AsYouMeanResult asYouMeanResult = new AsYouMeanResult();
 		
-		asYouMeanResult.setSimilarityRatio("%80");
-		asYouMeanResult.setWordGuessed("dummy");
+		AsYouMeanResult asYouMeanResult = WorldUtil.getInstance().wordMatch(keyword);
 		
 		return asYouMeanResult;
 	}

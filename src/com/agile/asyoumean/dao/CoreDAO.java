@@ -26,12 +26,12 @@ public class CoreDAO  extends DAO {
 		try {
 
 			con = JNDISource.getInstance().getBSCSConnection();
-			pstmt = con.prepareStatement("select * from uccs_tester.dummy_word_list ");
+			pstmt = con.prepareStatement("select WORD, EXACT_MATCH from uccs_tester.dummy_word_list");
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-					String keyword =  rs.getString("keyword");
-					String strictMatch =  rs.getString("strictmatch");
-					smsAppCodes.put(keyword,strictMatch);
+					String keyword =  rs.getString("WORD");
+					String strictMatch =  rs.getString("EXACT_MATCH") == null? "": rs.getString("EXACT_MATCH");
+					smsAppCodes.put(keyword.toUpperCase(),strictMatch);
 			}					
 		} catch(Exception e){
 			throw new RuntimeException(e);

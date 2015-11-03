@@ -14,15 +14,9 @@ public class JNDISource {
 
 	private InitialContext initialContext;
 	
-	private DataSource qdbDataSource;
-	private DataSource htmldbDataSource;
 	private DataSource bscsDataSource;
-	private DataSource npdbDataSource;
 	
-	private static final String HTMLDB_JNDI = "SMS-SMSDB-DS";
-	private static final String QDB_JNDI = "SMS-QDB-JNDI";
-	private static final String BSCS_JNDI = "SMS-BSCS-JNDI";
-	private static final String NPDB_JNDI = "SMS-NPDB-DS";
+	private static final String BSCS_JNDI = "BSCS-JNDI";
 	
 	private static JNDISource jndi = new JNDISource();		
 	
