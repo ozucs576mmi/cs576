@@ -1,5 +1,6 @@
 package com.agile.asyoumean.util;
 
+import java.text.DecimalFormat;
 import java.util.Hashtable;
 
 import com.agile.asyoumean.dao.CoreDAO;
@@ -68,7 +69,8 @@ public class WorldUtil {
 				
 			}
 		}
-		similarity = "" + (distanceDelta * 100);
+		DecimalFormat df = new DecimalFormat("#.####");
+		similarity = "" + df.format((distanceDelta * 100));
 		
 		System.out.println("jaro winkler match time: " + (System.currentTimeMillis() - start));
 		result.setWordGuessed(matchedWord);
