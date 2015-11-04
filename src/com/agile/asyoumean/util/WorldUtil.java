@@ -28,6 +28,7 @@ public class WorldUtil {
 		return wordList;
 	}
 
+	//Set word list
 	public void setWordList(Hashtable<String, String> wordList) {
 		this.wordList = wordList;
 	}
