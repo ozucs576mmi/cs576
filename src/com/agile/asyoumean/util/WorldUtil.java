@@ -37,6 +37,7 @@ public class WorldUtil {
 			getWorldList();
 	}
 	
+	//Method for word match
 	public AsYouMeanResult wordMatch(String keyword){
 		AsYouMeanResult result = new AsYouMeanResult();
 		
@@ -72,6 +73,7 @@ public class WorldUtil {
 		DecimalFormat df = new DecimalFormat("#.####");
 		similarity = "" + df.format((distanceDelta * 100));
 		
+		//Print match time
 		System.out.println("jaro winkler match time: " + (System.currentTimeMillis() - start));
 		result.setWordGuessed(matchedWord);
 		result.setSimilarityRatio(similarity);
