@@ -32,6 +32,7 @@ public class WorldUtil {
 		this.wordList = wordList;
 	}
 
+	//initialize
 	private void init(){
 		if(wordList == null)
 			getWorldList();
