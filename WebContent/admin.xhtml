@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xml:lang="tr" lang="tr">
+
+<f:view locale="tr">
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Test</title>
+		<style type="text/css">
+		</style>
+		<script type="text/javascript">
+		</script>
+	</h:head>
+	<h:body>
+ <h:form id="form">
+	<p:growl id="msgs" showDetail="true" />
+
+    <h3 style="margin-top:0">Admin Panel</h3>
+    <p:tabView>
+        <p:tab title="Dictionary">
+            <p:panelGrid columns="2" cellpadding="10">
+            <p:column> 
+                        <p:row>
+           <p:outputLabel for="wordn" value="New Word: " />
+             <p:inputText  id="wordn" value="#{adminPageBean.newWord.word}"/> </p:row>
+           
+            
+             
+               <p:row>
+                 <p:outputLabel for="wordxn"  value="Exact_Match " /> 
+                    
+                   
+                    <p:inputText id="wordxn" value="#{adminPageBean.newWord.exactMatch}"/> 
+                     </p:row>
+                    
+                  <p:row>
+                        <p:commandButton value="Add Word" action="#{adminPageBean.addItem}" update=":form"/>
+                        </p:row>
+        </p:column> 
+            
+             <p:column>
+            
+             <p:contextMenu for="words">
+        <p:menuitem value="Delete" update="words" icon="ui-icon-close" actionListener="#{adminPageBean.removeItem}"/>
+    </p:contextMenu>
+   <p:dataTable var="dic" value="#{adminPageBean.dictionary}" id="words" selection="#{adminPageBean.selectedWord}" selectionMode="single"  rowKey="#{dic.word}">
+  <p:ajax event="rowSelect" listener="#{adminPageBean.onRowSelect}" update=":form" />
+        <p:ajax event="rowUnselect" listener="#{adminPageBean.onRowUnselect}" update=":form" />
+    <p:column headerText="Word" filterBy="#{dic.word}" filterMatchMode="contains">
+        <h:outputText value="#{dic.word}" />
+    </p:column>
+ 
+    <p:column headerText="Exact_Match" filterBy="#{dic.exactMatch}" filterMatchMode="contains">
+        <h:outputText value="#{dic.exactMatch}" />
+    </p:column>
+      <p:column>
+     <p:commandButton icon="ui-icon-trash"
+                        title="Delete this word"
+                        ajax="false" actionListener="#{adminPageBean.removeItem}" update="words"/>
+                </p:column>
+</p:dataTable>
+</p:column>
+            </p:panelGrid>
+        </p:tab>
+        <p:tab title="Algorithm Selection">
+            <p:panelGrid columns="2" cellpadding="10">
+                             <p:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+        <p:outputLabel for="algorithm" value="Algoritma Seciniz:" />
+        <p:selectOneRadio id="algorithm">
+            <f:selectItem itemLabel="Jaro Winkler" itemValue="JaroWinkler" />
+            <f:selectItem itemLabel="Other algorithm" itemValue="Other" />
+        </p:selectOneRadio>
+    </p:panelGrid>
+            </p:panelGrid>
+        </p:tab>
+    </p:tabView>
+    
+		</h:form>
+	</h:body>
+</f:view>
+
+</html>
+

@@ -36,17 +36,24 @@
 						value="Close" oncomplete="infoDialogWidget.hide()" />
 				</h:panelGrid>
 			</p:dialog>	
-
+<!-- 
+<p:outputPanel style=" margin-top:100px; margin-left:100px; ">
 
     <h3 style="margin-top:0">Algorithm</h3>
     <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
-        <p:outputLabel for="algorithm" value="Algoritma Seçiniz:" />
+        <p:outputLabel for="algorithm" value="Algoritma Seciniz:" />
         <p:selectOneRadio id="algorithm" value="#{radioView.algorithm}">
             <f:selectItem itemLabel="Jaro Winkler" itemValue="JaroWinkler" />
             <f:selectItem itemLabel="Other algorithm" itemValue="Other" />
         </p:selectOneRadio>
     </h:panelGrid>
-
+    
+    </p:outputPanel>	
+ -->
+   <p:commandLink id="goToAdminBtn"   immediate="True" action="/admin.xhtml" value="Admin Panel">
+    </p:commandLink>
+    
+ 
 		</h:form>
 	</h:body>
 </f:view>

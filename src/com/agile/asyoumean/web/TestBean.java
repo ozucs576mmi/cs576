@@ -1,7 +1,10 @@
 package com.agile.asyoumean.web;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -10,6 +13,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 
 import com.agile.asyoumean.model.externalmodel.AsYouMeanResult;
+import com.agile.asyoumean.model.externalmodel.DictionaryItem;
 import com.agile.asyoumean.util.AsYouMeanUtil;
 
 
@@ -23,6 +27,19 @@ public class TestBean implements Serializable{
 	private static final long serialVersionUID = 8915515470802383339L;
 	private String test;
 	private String resultMessage;
+	private List<DictionaryItem> dictionaryList;
+	
+	
+	public List<DictionaryItem> getDictionaryList() {
+		return dictionaryList;
+	}
+
+
+
+	public void setDictionaryList(List<DictionaryItem> dictionaryList) {
+		this.dictionaryList = dictionaryList;
+	}
+
 
 	public void action() {
 		
@@ -42,6 +59,9 @@ public class TestBean implements Serializable{
 	//	addMessage("input: " + test + " " + asYouMeanResult.toString());
 		}
 	}
+	
+
+	
 
 	public String getTest() {
 		return test;
@@ -63,4 +83,6 @@ public class TestBean implements Serializable{
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
+	
+	
 }
