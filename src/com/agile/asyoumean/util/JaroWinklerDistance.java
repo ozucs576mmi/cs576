@@ -1,5 +1,6 @@
 package com.agile.asyoumean.util;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 
 /**
@@ -46,12 +47,15 @@ public class JaroWinklerDistance extends AbstractStringSimilarity{
 		
 		System.out.println(temp.getDistancePercentage("GELEBILIRIM", "GELEBÝLÝRÝM"));
 		System.out.println(temp.getDistancePercentage("BILIYORUM", "GELEBILIRIM"));
-
+		
 	}
 	
 	
 	
 	public double getDistance(String source,String target) {
+		if(source == null || target == null) {
+			return 0.0;
+		}
 		double sourceLength = source.length();
 		double targetLength = target.length();
 		

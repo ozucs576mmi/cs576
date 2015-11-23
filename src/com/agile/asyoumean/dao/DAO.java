@@ -6,7 +6,7 @@ import java.sql.*;
 public class DAO {
 	
 
-    public void freeConnection(Connection con, Statement stmt, ResultSet rs) {
+    public static void freeConnection(Connection con, Statement stmt, ResultSet rs) {
         if (rs != null) {
             try {
                 rs.close();
