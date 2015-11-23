@@ -9,7 +9,7 @@ import com.agile.asyoumean.model.externalmodel.AsYouMeanResult;
 public class WorldUtil {
 
 	
-	private WorldUtilProduct worldUtilProduct = new WorldUtilProduct();
+	private WorldUtilService worldUtilService = new WorldUtilService();
 
 	private static WorldUtil worldUtil = null; 
 	
@@ -21,17 +21,17 @@ public class WorldUtil {
 	}
 	
 	public Hashtable<String, String> getWordList() {
-		return worldUtilProduct.getWordList();
+		return worldUtilService.getWordList();
 	}
 
 	//Set word list
 	public void setWordList(Hashtable<String, String> wordList) {
-		worldUtilProduct.setWordList(wordList);
+		worldUtilService.setWordList(wordList);
 	}
 
 	//Method for word match
 	public AsYouMeanResult wordMatch(String keyword){
-		return worldUtilProduct.wordMatch(keyword);
+		return worldUtilService.wordMatch(keyword);
 	}
 	
 }

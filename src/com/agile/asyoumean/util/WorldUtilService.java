@@ -6,7 +6,7 @@ import com.agile.asyoumean.dao.CoreDAO;
 import com.agile.asyoumean.model.externalmodel.AsYouMeanResult;
 import java.text.DecimalFormat;
 
-public class WorldUtilProduct {
+public class WorldUtilService {
 	private Hashtable<String, String> wordList = null;
 
 	public Hashtable<String, String> getWordList() {
