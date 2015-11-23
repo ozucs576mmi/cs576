@@ -24,7 +24,7 @@
             <p:column> 
                         <p:row>
            <p:outputLabel for="wordn" value="New Word: " />
-             <p:inputText  id="wordn" value="#{adminPageBean.newWord.word}"/> </p:row>
+             <p:inputText  id="wordn" value="#{adminPageBean.newWord.word}"/> </p:row><br></br>
            
             
              
@@ -32,12 +32,16 @@
                  <p:outputLabel for="wordxn"  value="Exact_Match " /> 
                     
                    
-                    <p:inputText id="wordxn" value="#{adminPageBean.newWord.exactMatch}"/> 
+                    <p:inputText id="wordxn" value="#{adminPageBean.newWord.exactMatch}"/> <br></br>
                      </p:row>
                     
                   <p:row>
                         <p:commandButton value="Add Word" action="#{adminPageBean.addItem}" update=":form"/>
                         </p:row>
+                               <p:commandButton
+                    value = "Cache refresh"
+                    id = "CallWsButton"
+                   />
         </p:column> 
             
              <p:column>
@@ -62,19 +66,83 @@
                 </p:column>
 </p:dataTable>
 </p:column>
+
             </p:panelGrid>
+            <a href="index.xhtml">Back to main</a>
         </p:tab>
         <p:tab title="Algorithm Selection">
             <p:panelGrid columns="2" cellpadding="10">
                              <p:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
         <p:outputLabel for="algorithm" value="Algoritma Seciniz:" />
         <p:selectOneRadio id="algorithm">
-            <f:selectItem itemLabel="Jaro Winkler" itemValue="JaroWinkler" />
+            <f:selectItem itemLabel="Jaro Winkler" itemValue="JaroWinkler" selected="true" />
             <f:selectItem itemLabel="Other algorithm" itemValue="Other" />
         </p:selectOneRadio>
     </p:panelGrid>
+    
             </p:panelGrid>
+            <a href="index.xhtml">Back to main</a>
         </p:tab>
+        
+         <p:tab title="Graph">
+        <h:form id = "form">
+            	<p:pieChart value="#{chartBean.pieModel}" legendPosition="w"/>
+            	<p:growl id = "message" life = "4000"/>
+              
+            	<a href="index.xhtml">Back to main</a>
+            </h:form> 
+         </p:tab>
+          <p:tab title="User Administration" rendered="#{adminPageBean.superUser}">
+        <h:form id = "User">
+            <p:panelGrid columns="2" cellpadding="10">
+            <p:column> 
+                        <p:row>
+           <p:outputLabel for="wordn" value=" User Name: " />
+             <p:inputText  id="wordn" value="#{adminPageBean.newWord.word}"/> </p:row><br></br>
+           
+            
+             
+               <p:row>
+                 <p:outputLabel for="wordxn"  value="Password " /> 
+                    
+                   
+                    <p:inputText id="wordxn" value="#{adminPageBean.newWord.exactMatch}"/> <br></br>
+                     </p:row>
+                    <p:row>
+               
+                        <p:commandButton value="Add User" action="#{adminPageBean.addItem}" update=":form"/>
+                        </p:row> 
+        </p:column> 
+            
+             <p:column>
+            
+             <p:contextMenu for="usr">
+        <p:menuitem value="Delete" update="usr" icon="ui-icon-close" actionListener="#{adminPageBean.removeItem}"/>
+    </p:contextMenu>
+   <p:dataTable var="usr" value="#{adminPageBean.users}" id="usr" selection="#{adminPageBean.selectedUser}" selectionMode="single"  rowKey="#{usr.userName}" >
+  <p:ajax event="rowSelect" listener="#{adminPageBean.onRowSelectUser}" update="usr" />
+        <p:ajax event="rowUnselect" listener="#{adminPageBean.onRowUnselectUser}" update="usr" />
+    <p:column headerText="Username" filterBy="#{usr.UserName}" filterMatchMode="contains">
+        <h:outputText value="#{usr.userName}" />
+    </p:column>
+ 
+    <p:column headerText="Password" filterBy="#{usr.password}" filterMatchMode="contains" rendered="false">
+        <h:outputText value="#{usr.password}" />
+    </p:column>
+      <p:column>
+<p:commandButton icon="ui-icon-trash"
+                        title="Delete this user"
+                        ajax="false" update="usr"/>-->
+                </p:column> 
+</p:dataTable>
+</p:column>
+
+            </p:panelGrid>
+              
+            	<a href="index.xhtml">Back to main</a>
+            </h:form> 
+         </p:tab>
+   
     </p:tabView>
     
 		</h:form>
