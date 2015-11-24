@@ -1,9 +1,12 @@
-package com.agile.asyoumean.util;
+package com.agile.asyoumean.service.impl;
 
 
 import java.util.Hashtable;
+
 import com.agile.asyoumean.dao.CoreDAO;
 import com.agile.asyoumean.model.externalmodel.AsYouMeanResult;
+import com.agile.asyoumean.util.JaroWinklerDistance;
+
 import java.text.DecimalFormat;
 
 public class WorldUtilService {
