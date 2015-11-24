@@ -7,7 +7,7 @@ import javax.naming.NamingException;
 
 public abstract class IJNDISource {
 
-	public abstract Connection getVASConnection() throws NamingException, SQLException;	
+	public abstract Connection getVASConnection() throws NamingException, SQLException;
 
 	public abstract void setJndi(IJNDISource jndi);
 }

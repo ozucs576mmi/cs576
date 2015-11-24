@@ -1,10 +1,8 @@
 package com.agile.asyoumean.web;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -16,10 +14,9 @@ import com.agile.asyoumean.model.externalmodel.AsYouMeanResult;
 import com.agile.asyoumean.model.externalmodel.DictionaryItem;
 import com.agile.asyoumean.util.AsYouMeanUtil;
 
-
 @ViewScoped
-@ManagedBean(name="testBean")
-public class TestBean implements Serializable{
+@ManagedBean(name = "testBean")
+public class TestBean implements Serializable {
 
 	/**
 	 * 
@@ -28,40 +25,42 @@ public class TestBean implements Serializable{
 	private String test;
 	private String resultMessage;
 	private List<DictionaryItem> dictionaryList;
-	
-	
+
 	public List<DictionaryItem> getDictionaryList() {
 		return dictionaryList;
 	}
-
-
 
 	public void setDictionaryList(List<DictionaryItem> dictionaryList) {
 		this.dictionaryList = dictionaryList;
 	}
 
-
 	public void action() {
-		
+
 		AsYouMeanResult asYouMeanResult = AsYouMeanUtil.getInstance().getAsYouMeanResult(test);
-		
-		if(test.isEmpty()){
-			
+
+		showResult(asYouMeanResult);
+	}
+
+	private void showResult(AsYouMeanResult asYouMeanResult) {
+		if (test.isEmpty()) {
+
 			resultMessage = "Lutfen bir Keyword giriniz..!";
-			RequestContext context = RequestContext.getCurrentInstance();
+			RequestContext context = getCurrentInstance();
 			context.execute("infoDialogWidget.show()");
-		}else{
-		
-		resultMessage = "Input: " + test + "<br/>" + asYouMeanResult.toString();
-		
-		RequestContext context = RequestContext.getCurrentInstance();
-		context.execute("infoDialogWidget.show()");
-	//	addMessage("input: " + test + " " + asYouMeanResult.toString());
+		} else {
+
+			resultMessage = "Input: " + test + "<br/>" + asYouMeanResult.toString();
+
+			RequestContext context = getCurrentInstance();
+			context.execute("infoDialogWidget.show()");
+			// addMessage("input: " + test + " " + asYouMeanResult.toString());
 		}
 	}
-	
 
-	
+	private RequestContext getCurrentInstance() {
+		RequestContext context = RequestContext.getCurrentInstance();
+		return context;
+	}
 
 	public String getTest() {
 		return test;
@@ -83,6 +82,5 @@ public class TestBean implements Serializable{
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
-	
-	
+
 }

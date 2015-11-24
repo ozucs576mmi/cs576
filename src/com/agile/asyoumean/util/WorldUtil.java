@@ -9,30 +9,29 @@ import com.agile.asyoumean.service.impl.WorldUtilService;
 
 public class WorldUtil {
 
-	
 	private WorldUtilService worldUtilService = new WorldUtilService();
 
-	private static WorldUtil worldUtil = null; 
-	
-	public static WorldUtil getInstance(){
-		
-		if(worldUtil == null)
+	private static WorldUtil worldUtil = null;
+
+	public static WorldUtil getInstance() {
+
+		if (worldUtil == null)
 			worldUtil = new WorldUtil();
 		return worldUtil;
 	}
-	
+
 	public Hashtable<String, String> getWordList() {
 		return worldUtilService.getWordList();
 	}
 
-	//Set word list
+	// Set word list
 	public void setWordList(Hashtable<String, String> wordList) {
 		worldUtilService.setWordList(wordList);
 	}
 
-	//Method for word match
-	public AsYouMeanResult wordMatch(String keyword){
+	// Method for word match
+	public AsYouMeanResult wordMatch(String keyword) {
 		return worldUtilService.wordMatch(keyword);
 	}
-	
+
 }

@@ -6,23 +6,26 @@ public class AsYouMeanResult {
 
 	private String wordGuessed;
 	private String similarityRatio;
-	
-	
-	@XmlElement(name="wordGuessed")
+
+	@XmlElement(name = "wordGuessed")
 	public String getWordGuessed() {
 		return wordGuessed;
 	}
+
 	public void setWordGuessed(String wordGuessed) {
 		this.wordGuessed = wordGuessed;
 	}
-	@XmlElement(name="similarityRatio")
+
+	@XmlElement(name = "similarityRatio")
 	public String getSimilarityRatio() {
 		return similarityRatio;
 	}
+
 	public void setSimilarityRatio(String similarityRatio) {
 		this.similarityRatio = similarityRatio;
 	}
-	public String toString(){
+
+	public String toString() {
 		return "WordGuessed: " + wordGuessed + "<br/> SimilarityRatio: " + similarityRatio;
 	}
 }
