@@ -1,6 +1,7 @@
 package com.agile.asyoumean.util;
 
 import java.io.IOException;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -11,6 +12,9 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+
+
 
 @WebFilter(filterName = "AuthFilter", urlPatterns = { "*.xhtml" })
 public class AuthFilter implements Filter {
@@ -29,6 +33,7 @@ public class AuthFilter implements Filter {
 
 			// check whether session variable is set
 			HttpServletRequest req = (HttpServletRequest) request;
+			
 			HttpServletResponse res = (HttpServletResponse) response;
 			HttpSession ses = req.getSession(false);
 			// allow user to proccede if url is login.xhtml or user logged in or
