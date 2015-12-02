@@ -1,6 +1,5 @@
 package com.agile.asyoumean.util;
 
-import java.text.DecimalFormat;
 import java.util.Arrays;
 
 /**
@@ -37,27 +36,27 @@ import java.util.Arrays;
  * 
  */
 public class JaroWinklerDistance extends AbstractStringSimilarity {
+	
 	public static void main(String[] args) {
+		
 		JaroWinklerDistance temp = new JaroWinklerDistance();
+		
 		System.out.println(temp.getDistancePercentage("ABBA", "BAAB"));
 		System.out.println(temp.getDistancePercentage("ABA", "ACA"));
 		System.out.println(temp.getDistancePercentage("AB", "B"));
 		System.out.println(temp.getDistancePercentage("AB", "BA"));
-
-		System.out.println(temp.getDistancePercentage("KONTER", "KONTORTRANSFER"));
-		System.out.println(temp.getDistancePercentage("ISTIYORUM", "KONTORTRANSFER"));
-		System.out.println(temp.getDistancePercentage("KONTERTRANSFER", "TRANSFER"));
 		System.out.println(temp.getDistancePercentage("ABCVWXYZ", "CABVWXYZ"));
-
 		System.out.println(temp.getDistancePercentage("GELEBILIRIM", "GELEBÝLÝRÝM"));
 		System.out.println(temp.getDistancePercentage("BILIYORUM", "GELEBILIRIM"));
 
 	}
 
 	public double getDistance(String source, String target) {
+		
 		if (source == null || target == null) {
 			return 0.0;
 		}
+		
 		double sourceLength = source.length();
 		double targetLength = target.length();
 
@@ -78,15 +77,22 @@ public class JaroWinklerDistance extends AbstractStringSimilarity {
 
 		// step1 : find matching characters
 		for (int index = 0; index < sourceLength; index++) {
+			
 			int start = Math.max(0, index - searchRange);
 			int end = Math.min((int) targetLength, index + searchRange + 1);
+			
 			for (int tempIndex = start; tempIndex < end; tempIndex++) {
-				if (source.charAt(index) == target.charAt(tempIndex) && !targetMatch[tempIndex]) {
+				
+				if (source.charAt(index) == target.charAt(tempIndex)
+						&& !targetMatch[tempIndex]) {
+					
 					matchCandidate++;
 					sourceMatch[index] = true;
 					targetMatch[tempIndex] = true;
 					break;
+					
 				}
+				
 			}
 
 			/**
@@ -103,45 +109,59 @@ public class JaroWinklerDistance extends AbstractStringSimilarity {
 
 		// step2: find transposes
 		int tempIndex = 0;
+		
 		for (int index = 0; index < sourceLength; index++) {
+			
 			if (!sourceMatch[index]) {
+
 				continue;
+				
 			} else {
+				
 				while (!targetMatch[tempIndex]) {
 					tempIndex++;
 				}
+				
 				if (source.charAt(index) != target.charAt(tempIndex)) {
 					transposeCandidate++;
 				}
+				
 				tempIndex++;
+				
 			}
+		
 		}
 
 		double transpose = transposeCandidate / 2;
 
 		// step3 : calculate Jaro distance
-		double jaroDistance = ((matchCandidate / sourceLength) + (matchCandidate / targetLength) + ((matchCandidate - transpose) / matchCandidate)) / 3;
+		double jaroDistance = ((matchCandidate / sourceLength)
+				+ (matchCandidate / targetLength) + ((matchCandidate - transpose) / matchCandidate)) / 3;
+		
 		// step4 : calculate Jaro-Winkler distance
-		int commonPrefixSearchRange = (int) Math.min(4, Math.min(sourceLength, targetLength)); // prefix
-																								// range
-																								// is
-																								// at
-																								// most
-																								// 4
+		int commonPrefixSearchRange = (int) Math.min(4,
+				Math.min(sourceLength, targetLength)); // prefix range is at most 4
 		double scalingFactor = 0.1;
 		int commonPrefix = 0;
+		
 		for (; commonPrefix < commonPrefixSearchRange; commonPrefix++) {
+			
 			if (source.charAt(commonPrefix) != target.charAt(commonPrefix)) {
 				break;
 			}
+			
 		}
 
-		double jaroWinklerDistance = jaroDistance + (commonPrefix * scalingFactor * (1 - jaroDistance));
+		double jaroWinklerDistance = jaroDistance
+				+ (commonPrefix * scalingFactor * (1 - jaroDistance));
 
 		return jaroWinklerDistance;
+		
 	}
 
 	public double getDistancePercentage(String source, String target) {
+		
 		return 100 * getDistance(source, target);
+		
 	}
 }

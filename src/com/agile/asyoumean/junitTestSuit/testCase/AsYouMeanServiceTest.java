@@ -16,4 +16,5 @@ public class AsYouMeanServiceTest {
 	   System.out.println(asYouMeanUtil.getAsYouMeanResult("DUMMY"));
        assertEquals(result, "" + asYouMeanUtil.getAsYouMeanResult("DUMMY"));   
    }
+   
 }

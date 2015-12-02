@@ -1,23 +1,24 @@
 package com.agile.asyoumean.model.externalmodel;
 
 public class DictionaryItem {
-	private String word;
-	private String exactMatch;
 
-	public String getWord() {
-		return word;
-	}
+    private String word;
+    private String exactMatch;
 
-	public void setWord(String word) {
-		this.word = word;
-	}
+    public String getWord() {
+        return word;
+    }
 
-	public String getExactMatch() {
-		return exactMatch;
-	}
+    public void setWord(String word) {
+        this.word = word;
+    }
 
-	public void setExactMatch(String exactMatch) {
-		this.exactMatch = exactMatch;
-	};
+    public String getExactMatch() {
+        return exactMatch;
+    }
+
+    public void setExactMatch(String exactMatch) {
+        this.exactMatch = exactMatch;
+    }
 
 }

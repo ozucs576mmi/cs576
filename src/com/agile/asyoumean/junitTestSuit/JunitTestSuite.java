@@ -7,9 +7,8 @@ import com.agile.asyoumean.junitTestSuit.testCase.Algorithm1Test;
 import com.agile.asyoumean.junitTestSuit.testCase.AsYouMeanServiceTest;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({
-	Algorithm1Test.class,
-	AsYouMeanServiceTest.class
-})
-public class JunitTestSuite {   
+@Suite.SuiteClasses({ Algorithm1Test.class, AsYouMeanServiceTest.class })
+
+public class JunitTestSuite {
+	
 }

@@ -1,43 +1,1 @@
-package com.agile.asyoumean.dao;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.Hashtable;
-
-public class CoreDAO extends DAO {
-
-	private static CoreDAO coreDAO = new CoreDAO();
-
-	public static CoreDAO getInstance() {
-		return coreDAO;
-	}
-
-	public Hashtable<String, String> getDummyWordList() {
-		Hashtable<String, String> smsAppCodes = new Hashtable<String, String>();
-		// String method = "CoreDAO.getDummyWordList";
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		try {
-
-			con = JNDISource.getInstance().getBSCSConnection();
-			pstmt = con.prepareStatement("select WORD, EXACT_MATCH from uccs_tester.dummy_word_list");
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				String keyword = rs.getString("WORD");
-				String strictMatch = rs.getString("EXACT_MATCH") == null ? "" : rs.getString("EXACT_MATCH");
-				smsAppCodes.put(keyword.toUpperCase(), strictMatch);
-			}
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		} catch (Throwable e) {
-			throw new RuntimeException(e);
-		} finally {
-			freeConnection(con, pstmt, rs);
-		}
-		return smsAppCodes;
-	}
-
-}
+package com.agile.asyoumean.dao;import java.sql.Connection;import java.sql.PreparedStatement;import java.sql.ResultSet;import java.util.ArrayList;import java.util.Hashtable;import java.util.List;import com.agile.asyoumean.model.externalmodel.AsYouMeanResult;import com.agile.asyoumean.model.externalmodel.DictionaryItem;import com.agile.asyoumean.model.externalmodel.MatchRatioItem;import com.agile.asyoumean.model.externalmodel.User;import com.agile.asyoumean.util.Constants;public class CoreDAO extends DAO {	private static CoreDAO coreDAO = new CoreDAO();		private Connection con = null;	private PreparedStatement pstmt = null;	private ResultSet rs = null;		public static CoreDAO getInstance() {		return coreDAO;	}		public  List<DictionaryItem>  getWordList() {						 List<DictionaryItem> wordList = new ArrayList<DictionaryItem>();				try {						con = JNDISource.getInstance().getBSCSConnection();			pstmt = con.prepareStatement("select WORD, EXACT_MATCH from uccs_tester.dummy_word_list where   rownum<300");			rs = pstmt.executeQuery();						while (rs.next()) {				DictionaryItem dic = new DictionaryItem();				dic.setWord(rs.getString("WORD"));				dic.setExactMatch(rs.getString("EXACT_MATCH") == null ? "" : rs						.getString("EXACT_MATCH"));				wordList.add(dic);			}					} catch (Exception e) {			throw new RuntimeException(e);		} catch (Throwable e) {			throw new RuntimeException(e);		} finally {			freeConnection(con, pstmt, rs);		}				return wordList;			}				public  List<MatchRatioItem>  getMatchRatio() {						 List<MatchRatioItem> ratioList = new ArrayList<MatchRatioItem>();				try {						con = JNDISource.getInstance().getBSCSConnection();			pstmt = con.prepareStatement("SELECT FLOOR (ACCURACY_RATIO / 5.01) + 1 AS ACC_SEGMENT," 					+ "TO_CHAR (FLOOR (ACCURACY_RATIO / 5.01) * 5) || '-' || TO_CHAR ( (FLOOR (ACCURACY_RATIO / 5.01) + 1) * 5) " 					+ "AS SEGM, SUM (1) AS CNT FROM UCCS_TESTER.DUMMY_SEARCH_LOG WHERE MATCH_ALGORITHM = 'JW'" 					+ "GROUP BY FLOOR (ACCURACY_RATIO / 5.01) ORDER BY ACC_SEGMENT");			rs = pstmt.executeQuery();						while (rs.next()) {				MatchRatioItem ratio = new MatchRatioItem();				ratio.setSegm(rs.getString("SEGM"));				ratio.setCnt(rs.getInt("CNT"));				ratioList.add(ratio);			}					} catch (Exception e) {			throw new RuntimeException(e);		} catch (Throwable e) {			throw new RuntimeException(e);		} finally {			freeConnection(con, pstmt, rs);		}				return ratioList;			}			public Hashtable<String, String> getDummyWordList() {				Hashtable<String, String> wordList = new Hashtable<String, String>();		String keyword;		String strictMatch;				try {						con = JNDISource.getInstance().getBSCSConnection();			pstmt = con.prepareStatement("select WORD, EXACT_MATCH from uccs_tester.dummy_word_list");			rs = pstmt.executeQuery();						while (rs.next()) {				keyword = rs.getString("WORD");				strictMatch = rs.getString("EXACT_MATCH") == null ? "" : rs.getString("EXACT_MATCH");				wordList.put(keyword.toLowerCase(), strictMatch);			}					} catch (Exception e) {			throw new RuntimeException(e);		} catch (Throwable e) {			throw new RuntimeException(e);		} finally {			freeConnection(con, pstmt, rs);		}				return wordList;			}			public void logResultsToDB(String keyword, AsYouMeanResult asYouMeanResult){				try {						con = JNDISource.getInstance().getBSCSConnection();						pstmt = con.prepareStatement(					"insert into uccs_tester.dummy_search_log(GIVEN_WORD, MATCHED_WORD, ACCURACY_RATIO, MATCH_ALGORITHM) values('" 					+ keyword + "', '" 					+ asYouMeanResult.getWordGuessed() + "', "					+ asYouMeanResult.getSimilarityRatio().replace("%", "") + ", "					+ "'JW')"				);						rs = pstmt.executeQuery();					} catch (Exception e) {			throw new RuntimeException(e);		} catch (Throwable e) {			throw new RuntimeException(e);		} finally {			freeConnection(con, pstmt, rs);		}			}		public String[][] getStatisticsFromLog(){				String[][] topUsed = new String[500][5];		int i = 0;		try {						con = JNDISource.getInstance().getBSCSConnection();						//en çok kullanýlmýþ ilk 10 kelimeyi belirle ve log detayýný al			pstmt = con.prepareStatement( 				"SELECT * FROM dummy_search_log WHERE matched_word IN (" +					"SELECT matched_word FROM (" +						"SELECT COUNT (matched_word), matched_word FROM dummy_search_log" +						"GROUP BY matched_word" +						"ORDER BY COUNT (matched_word) DESC)" +						"WHERE ROWNUM < 11)" +				"ORDER BY matched_word, given_word"			);					    			rs = pstmt.executeQuery();						while (rs.next() && i < 500) {								topUsed[i][0] = rs.getString("LOG_DATE");				topUsed[i][1] = rs.getString("GIVEN_WORD");				topUsed[i][2] = rs.getString("MATCHED_WORD");				topUsed[i][3] = rs.getString("ACCURACY_RATIO");				topUsed[i][4] = rs.getString("MATCH_ALGORITHM");				i++;			}					} catch (Exception e) {			throw new RuntimeException(e);		} catch (Throwable e) {			throw new RuntimeException(e);		} finally {			freeConnection(con, pstmt, rs);		}				return topUsed;			}			public void insertWord(){				try {						con = JNDISource.getInstance().getBSCSConnection();						pstmt = con.prepareStatement(					"INSERT INTO uccs_tester.dummy_word_list(word) VALUES (lower('" +					Constants.DUMMY.toLowerCase() +					"'), lower('" +					Constants.DUMMY.toLowerCase() +					"'))"				);						rs = pstmt.executeQuery();					} catch (Exception e) {			throw new RuntimeException(e);		} catch (Throwable e) {			throw new RuntimeException(e);		} finally {			freeConnection(con, pstmt, rs);		}			}			public void deleteWord(String word){				try {						con = JNDISource.getInstance().getBSCSConnection();						pstmt = con.prepareStatement(					"DELETE FROM UCCS_TESTER.DUMMY_WORD_LIST WHERE lower(word) = '" +					word.toLowerCase() +					"'"				);						rs = pstmt.executeQuery();					} catch (Exception e) {			throw new RuntimeException(e);		} catch (Throwable e) {			throw new RuntimeException(e);		} finally {			freeConnection(con, pstmt, rs);		}			}			public String[] searchWord(String word){				String[] wordTuple = new String[2];				try {						con = JNDISource.getInstance().getBSCSConnection();						pstmt = con.prepareStatement(					"SELECT * FROM UCCS_TESTER.DUMMY_WORD_LIST WHERE lower(word) = '" +					word.toLowerCase() +					"'"				);						rs = pstmt.executeQuery();						wordTuple[0] = rs.getString("WORD").toLowerCase();			wordTuple[1] = rs.getString("EXACT_MATCH") == null ? "" : rs.getString("EXACT_MATCH").toLowerCase();					} catch (Exception e) {			throw new RuntimeException(e);		} catch (Throwable e) {			throw new RuntimeException(e);		} finally {			freeConnection(con, pstmt, rs);		}				return wordTuple;			}	}

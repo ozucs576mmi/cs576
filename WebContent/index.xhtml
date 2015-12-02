@@ -1,63 +1,97 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui" xml:lang="tr" lang="tr">
-
-<f:view locale="tr">
-	<h:head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Test</title>
-		<style type="text/css">
-		</style>
-		<script type="text/javascript">
-		</script>
-	</h:head>
-	<h:body>
-		
-
-		<h:form id="form">		
-			<p:growl id="growl" life="4000" />	
-			<p:outputPanel style=" margin-top:100px; margin-left:100px; ">
-				<p:inputText id="name" value="#{testBean.test}"/>
-			</p:outputPanel>						
-			<p:commandButton value="Get Similar" id="CallWsButton" update="infoDialogPopUp" actionListener="#{testBean.action}" styleClass="ui-priority-primary" />
-			
-			
-			<p:dialog styleClass="infoDialog" width="450" height="120" header="" widgetVar="infoDialogWidget" modal="true" position="150,100"
-				resizable="false" id="infoDialogPopUp">
-				
-				<h:panelGrid id="modalPanel" columns="1" >	
-					<h:outputFormat id="resultMessageOutputId" value="#{testBean.resultMessage}" escape="false" style="font-weight:bold" />
-				</h:panelGrid>
-				
-				<h:panelGrid id="modalClosePanel" columns="1" >	
-					<p:commandButton styleClass="button-type3" id="CloseModel" style="margin-left:150px;"
-						value="Close" oncomplete="infoDialogWidget.hide()" />
-				</h:panelGrid>
-			</p:dialog>	
-<!-- 
-<p:outputPanel style=" margin-top:100px; margin-left:100px; ">
-
-    <h3 style="margin-top:0">Algorithm</h3>
-    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
-        <p:outputLabel for="algorithm" value="Algoritma Seciniz:" />
-        <p:selectOneRadio id="algorithm" value="#{radioView.algorithm}">
-            <f:selectItem itemLabel="Jaro Winkler" itemValue="JaroWinkler" />
-            <f:selectItem itemLabel="Other algorithm" itemValue="Other" />
-        </p:selectOneRadio>
-    </h:panelGrid>
-    
-    </p:outputPanel>	
- -->
-   <p:commandLink id="goToAdminBtn"   immediate="True" action="/login.xhtml" value="Admin Panel">
-    </p:commandLink>
-    
- 
-		</h:form>
-	</h:body>
-</f:view>
-
+<html
+    xmlns = "http://www.w3.org/1999/xhtml"
+    xmlns:h = "http://java.sun.com/jsf/html"
+    xmlns:f = "http://java.sun.com/jsf/core"
+    xmlns:p = "http://primefaces.org/ui"
+    xml:lang = "tr"
+    lang = "tr">
+    <f:view locale = "tr">
+        <h:head>
+            <meta http-equiv = "Content-Type" content = "text/html; charset=UTF-8"/>
+            <title>DidYouMean</title>
+            <style type = "text/css">.myTable {  
+     text-align: center;
+     background-color: #E0F2F7;</style>
+            <script type = "text/javascript"></script>
+        </h:head>
+        <h:body style = "background: #E0F2F7 !important;">
+            <h:form id = "form">
+             <p:remoteCommand name="initializePageDataCommand" autoRun="true" action="#{searchPageBean.init}" />
+                <p:growl id = "growl" life = "4000"/>
+                <h:outputText value = "DID YOU MEAN...? " style = "font-size:50px"/>
+                <p:panelGrid id = "resultPanel" columns = "1" style = "margin-top:250px; margin-left:370px;width:50%;  line-height:50px;">
+                    <p:column>
+                        <h:outputText value = "Word :   "/>
+                        <p:inputText id = "name" value = "#{searchPageBean.enteredText}" style = "align-text:right"/>
+                        <br></br>
+                        <h:outputText value = "Estimated Word :   "/>
+                        <h:outputText value = "#{searchPageBean.asYouMeanResult.wordGuessed}"/>
+                        <br></br>
+                        <h:outputText value = "Similarity Ratio :   "/>
+                        <h:outputText value = "#{searchPageBean.asYouMeanResult.similarityRatio}"/>
+                        <br></br>
+                         <h:outputText value = "Algorithm Name :   "/>
+                        <h:outputText value = "Jaro Winkler"/>
+                    </p:column>
+                    <f:facet name = "footer">
+                        <h:panelGroup style = "display:block; text-align:center;line-height:5px; ">
+                            <p:commandButton
+                                value = "Get Similar"
+                                id = "CallWsButton"
+                                update = "resultPanel"
+                                actionListener = "#{searchPageBean.action}"
+                                styleClass = "ui-priority-primary"
+                                style = "background: #00b5d1 !important;"/>
+                        </h:panelGroup>
+                    </f:facet>
+                </p:panelGrid>
+                <p:dialog
+                    styleClass = "infoDialog"
+                    width = "450"
+                    height = "100"
+                    header = ""
+                    widgetVar = "infoDialogWidget"
+                    modal = "true"
+                    position = "150,100"
+                    resizable = "false"
+                    id = "infoDialogPopUp">
+                    <h:panelGrid id = "modalPanel" columns = "1">
+                        <h:outputFormat
+                            id = "resultMessageOutputId"
+                            value = "Lutfen bir keyword giriniz....!"
+                            escape = "false"
+                            style = "font-weight:bold"/>
+                    </h:panelGrid>
+                    <h:panelGrid id = "modalClosePanel" columns = "1">
+                        <p:commandButton
+                            styleClass = "button-type3"
+                            id = "CloseModel"
+                            style = "margin-left:150px;line-height:5px;"
+                            value = "Close"
+                            oncomplete = "infoDialogWidget.hide()"/>
+                    </h:panelGrid>
+                </p:dialog>
+                <!--
+                <p:outputPanel style = " margin-top:100px; margin-left:100px; ">
+                    <h3 style = "margin-top:0">Algorithm</h3>
+                    <h:panelGrid columns = "2" style = "margin-bottom:10px" cellpadding = "5">
+                        <p:outputLabel for = "algorithm" value = "Algoritma Seciniz:"/>
+                        <p:selectOneRadio id = "algorithm" value = "#{radioView.algorithm}">
+                            <f:selectItem itemLabel = "Jaro Winkler" itemValue = "JaroWinkler"/>
+                            <f:selectItem itemLabel = "Other algorithm" itemValue = "Other"/>
+                        </p:selectOneRadio>
+                    </h:panelGrid>
+                </p:outputPanel>
+                -->
+                <p:commandLink
+                    id = "goToAdminBtn"
+                    immediate = "True"
+                    action = "/login.xhtml"
+                    value = "Admin Panel"
+                    style = "margin-top:250px; margin-left:370px;width:50%;  line-height:100px;">
+                </p:commandLink>
+            </h:form>
+        </h:body>
+    </f:view>
 </html>
-
-
