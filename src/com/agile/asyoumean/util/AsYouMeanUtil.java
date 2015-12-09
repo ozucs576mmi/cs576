@@ -10,13 +10,15 @@ public class AsYouMeanUtil {
 
 		if (asYouMeanUtil == null)
 			asYouMeanUtil = new AsYouMeanUtil();
+		
 		return asYouMeanUtil;
 	}
 
 	public AsYouMeanResult getAsYouMeanResult(String keyword) {
 
-		AsYouMeanResult asYouMeanResult = WorldUtil.getInstance().wordMatch(keyword);
+		AsYouMeanResult asYouMeanResult = WordUtil.getInstance().wordMatch(keyword);
 
 		return asYouMeanResult;
 	}
+	
 }

@@ -8,7 +8,7 @@
 <body>
 <table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
 <tr><td><b>Test Suite</b></td></tr>
-<tr><td><a href="Sımilarity_Test_1.html">Sımilarity_Test_1</a></td></tr>
+<tr><td><a href="Similarity_Test_1.html">Similarity_Test_1</a></td></tr>
 <tr><td><a href="Emty_Text_test.html">Emty_Text_test</a></td></tr>
 <tr><td><a href="Exact_Match_Test.html">Exact_Match_Test</a></td></tr>
 </tbody></table>
