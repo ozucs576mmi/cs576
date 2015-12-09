@@ -8,9 +8,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-
 import org.primefaces.context.RequestContext;
-
 import com.agile.asyoumean.dao.CoreDAO;
 import com.agile.asyoumean.model.externalmodel.AsYouMeanResult;
 import com.agile.asyoumean.model.externalmodel.DictionaryItem;
@@ -23,7 +21,7 @@ import com.agile.asyoumean.util.WordUtil;
 public class SearchPageBean implements Serializable {
 
     /**
-	 * 
+	 * Search Page implementation
 	 */
     private static final long serialVersionUID = 8915515470802383339L;
     private String enteredText;
