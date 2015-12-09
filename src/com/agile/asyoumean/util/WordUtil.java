@@ -1,14 +1,7 @@
 package com.agile.asyoumean.util;
 
-<<<<<<< HEAD
 import java.util.Hashtable;
 
-=======
-import java.text.DecimalFormat;
-import java.util.Hashtable;
-
-import com.agile.asyoumean.dao.CoreDAO;
->>>>>>> origin/master
 import com.agile.asyoumean.model.externalmodel.AsYouMeanResult;
 import com.agile.asyoumean.service.impl.WordUtilService;
 
