@@ -19,11 +19,11 @@ import com.agile.asyoumean.util.Constants;
 import com.agile.asyoumean.util.WordUtil;
 
 @SessionScoped
-@ManagedBean(name = "SearchPageBean")
+@ManagedBean(name = "searchPageBean")
 public class SearchPageBean implements Serializable {
 
     /**
-	 * 
+	 * Search Page implementation
 	 */
     private static final long serialVersionUID = 8915515470802383339L;
     private String enteredText;
@@ -56,29 +56,11 @@ public class SearchPageBean implements Serializable {
             context.execute("infoDialogWidget.show()");
         } else {
     	asYouMeanResult = AsYouMeanUtil.getInstance().getAsYouMeanResult(enteredText);
+    	CoreDAO.getInstance().logResultsToDB(enteredText, asYouMeanResult);
         }
         //showResult(asYouMeanResult);
     }
 
-    private void showResult(AsYouMeanResult asYouMeanResult) {
-	
-        if (enteredText.isEmpty()) {
-
-			resultMessage = Constants.MSG_ERROR;
-            RequestContext context = getCurrentInstance();
-            context.execute("infoDialogWidget.show()");
-        } else {
-
-            //???resultMessage = "Input: " + enteredText + "<br/>" + asYouMeanResult.toString();
-			
-			// iþlemi db'ye log'la
-			CoreDAO.getInstance().logResultsToDB(enteredText, asYouMeanResult);
-
-            RequestContext context = getCurrentInstance();
-            context.execute("infoDialogWidget.show()");
-            // addMessage("input: " + enteredText + " " + asYouMeanResult.toString());
-        }
-    }
 
     private RequestContext getCurrentInstance() {
 	

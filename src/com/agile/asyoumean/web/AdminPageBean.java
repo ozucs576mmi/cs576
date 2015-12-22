@@ -4,157 +4,243 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.UnselectEvent;
 
 import com.agile.asyoumean.dao.CoreDAO;
 import com.agile.asyoumean.dao.UserDAO;
 import com.agile.asyoumean.model.externalmodel.DictionaryItem;
+import com.agile.asyoumean.model.externalmodel.StatisticsItem;
 import com.agile.asyoumean.model.externalmodel.User;
 import com.agile.asyoumean.util.Util;
 
-@ViewScoped
+@SessionScoped
 @ManagedBean(name = "adminPageBean")
 public class AdminPageBean extends Util implements Serializable {
 
-    List<DictionaryItem> dictionarylist;
-    private static final long serialVersionUID = 8915515470802383339L;
-    private List<DictionaryItem> dictionary;
-    private List<User> users;
-    private DictionaryItem selectedWord;
-    private User selectedUser;
-    private DictionaryItem newWord = new DictionaryItem();
-    private boolean superUser;
-    private String algorithmType;
+	List<DictionaryItem> dictionarylist;
+	private static final long serialVersionUID = 8915515470802383339L;
+	private List<DictionaryItem> dictionary;
+	private List<User> users;
+	private DictionaryItem selectedWord;
+	private User selectedUser;
+	private DictionaryItem newWord = new DictionaryItem();
+	private String matchedWord;
+	private String searchedWord;
+	private boolean superUser;
+	private String algorithmType;
+	private List<StatisticsItem> mostCommonMistakes;
+	private List<StatisticsItem> topTenMistakes;
+	List<DictionaryItem> wordList;
 
-    @PostConstruct
-    public void postConstruct() {
-        users = listUsers();
-        dictionary= listDictionary();
-        checkSuperUser();
-    }
+	@PostConstruct
+	public void postConstruct() {
+		users = listUsers();
+//		dictionary = listDictionary();
+		topTenMistakes=listTopTenMistakes();
+		checkSuperUser();
 
-    public List<User> listUsers() {
+	}
 
-        List<User> userList = UserDAO.getInstance().userList();
+	public void clearCommonMistakesSearch() {
 
-        return userList;
-    }
-    
-    public List<DictionaryItem> listDictionary() {
+		mostCommonMistakes = null;
 
-        List<DictionaryItem> wordList = CoreDAO.getInstance().getWordList();
+	}
+	
+	public void clearSearchedWords() {
 
-        return wordList;
-    }
+		mostCommonMistakes = null;
 
+	}
 
-    private boolean checkSuperUser() {
+	public List<User> listUsers() {
 
-        HttpSession session = Util.getSession();
-        if (session.getAttribute("username").toString().equalsIgnoreCase("admin")) {
+		List<User> userList = UserDAO.getInstance().userList();
 
-            superUser = true;
-        }
+		return userList;
+	}
 
-        return superUser;
+	public List<StatisticsItem> listCommonMistakes() {
 
-    }
+		mostCommonMistakes = CoreDAO.getInstance().getStatisticsForCommon(
+				matchedWord);
 
-    public void removeItem() {
+		return mostCommonMistakes;
+	}
+	
+	public List<StatisticsItem> listTopTenMistakes() {
 
-        dictionary.remove(selectedWord);
-        selectedWord = null;
-    }
+		topTenMistakes = CoreDAO.getInstance().getStatisticsFromLog();
 
-    public void onRowSelect(SelectEvent event) {
+		return topTenMistakes;
+	}
+	
+	
 
-        selectedWord = (DictionaryItem) event.getObject();
-    }
+	public List<DictionaryItem> listDictionary() {
 
-    public void onRowUnselect(UnselectEvent event) {
+		wordList = CoreDAO.getInstance().searchWord(searchedWord);
 
-        selectedWord = null;
+		return wordList;
+	}
 
-    }
+	private boolean checkSuperUser() {
 
-    public void onRowSelectUser(SelectEvent event) {
+		HttpSession session = Util.getSession();
+		if (session.getAttribute("username").toString()
+				.equalsIgnoreCase("admin")) {
 
-        selectedUser = (User) event.getObject();
-    }
+			superUser = true;
+		}
 
-    public void onRowUnselectUser(UnselectEvent event) {
+		return superUser;
 
-        selectedUser = null;
+	}
 
-    }
+	public void removeItem() {
 
-    public void addItem() {
+		CoreDAO.getInstance().deleteWord(selectedWord.getWord());
+		FacesContext.getCurrentInstance().addMessage(
+				null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO,
+						"Selected word removed from dictionary",
+						"Selected word removed from dictionary!"));
 
-        dictionary.add(newWord);
-        selectedWord = null;
+		selectedWord = null;
+		
+	}
+	
+	public void tabchangelistenerForAnalysis( TabChangeEvent event ){
+		
+	
+			
+			topTenMistakes=listTopTenMistakes();
+			
+		
+	}
+	
+	
 
-    }
+	public void onRowSelect(SelectEvent event) {
 
-    public List<DictionaryItem> getDictionarylist() {
-        return dictionarylist;
-    }
+		selectedWord = (DictionaryItem) event.getObject();
+	}
 
-    public void setDictionarylist(List<DictionaryItem> dictionarylist) {
-        this.dictionarylist = dictionarylist;
-    }
+	public void onRowUnselect(UnselectEvent event) {
 
-    public List<DictionaryItem> getDictionary() {
-        return dictionary;
-    }
+		selectedWord = null;
 
-    public void setDictionary(List<DictionaryItem> dictionary) {
-        this.dictionary = dictionary;
-    }
+	}
 
-    public DictionaryItem getSelectedWord() {
-        return selectedWord;
-    }
+	public void onRowSelectUser(SelectEvent event) {
 
-    public void setSelectedWord(DictionaryItem selectedWord) {
-        this.selectedWord = selectedWord;
-    }
+		selectedUser = (User) event.getObject();
+	}
 
-    public DictionaryItem getNewWord() {
-        return newWord;
-    }
+	public void onRowUnselectUser(UnselectEvent event) {
 
-    public void setNewWord(DictionaryItem newWord) {
-        this.newWord = newWord;
-    }
+		selectedUser = null;
 
-    public List<User> getUsers() {
-        return users;
-    }
+	}
 
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
+	public void addItem() {
 
-    public User getSelectedUser() {
-        return selectedUser;
-    }
+		if (newWord.getWord().equalsIgnoreCase("")) {
 
-    public void setSelectedUser(User selectedUser) {
-        this.selectedUser = selectedUser;
-    }
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN,
+							"Please Enter New Word", "Please Enter New Word!"));
+		} else {
+		List<DictionaryItem> existedWord=	CoreDAO.getInstance().searchWord(newWord.getWord());
+			
+		if (existedWord.isEmpty()) {
 
-    public boolean isSuperUser() {
-        return superUser;
-    }
+				CoreDAO.getInstance().insertWord(newWord);
 
-    public void setSuperUser(boolean superUser) {
-        this.superUser = superUser;
-    }
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"Given word added to dictionary",
+								"Given word added to dictionary!"));
+//				dictionary = listDictionary();
+
+			} else {
+
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN,
+								"Given word already in dictionary",
+								"Given word already in dictionary!"));
+
+			}
+
+		}
+	}
+
+	public List<DictionaryItem> getDictionarylist() {
+		return dictionarylist;
+	}
+
+	public void setDictionarylist(List<DictionaryItem> dictionarylist) {
+		this.dictionarylist = dictionarylist;
+	}
+
+	public List<DictionaryItem> getDictionary() {
+		return dictionary;
+	}
+
+	public void setDictionary(List<DictionaryItem> dictionary) {
+		this.dictionary = dictionary;
+	}
+
+	public DictionaryItem getSelectedWord() {
+		return selectedWord;
+	}
+
+	public void setSelectedWord(DictionaryItem selectedWord) {
+		this.selectedWord = selectedWord;
+	}
+
+	public DictionaryItem getNewWord() {
+		return newWord;
+	}
+
+	public void setNewWord(DictionaryItem newWord) {
+		this.newWord = newWord;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+
+	public User getSelectedUser() {
+		return selectedUser;
+	}
+
+	public void setSelectedUser(User selectedUser) {
+		this.selectedUser = selectedUser;
+	}
+
+	public boolean isSuperUser() {
+		return superUser;
+	}
+
+	public void setSuperUser(boolean superUser) {
+		this.superUser = superUser;
+	}
 
 	public String getAlgorithmType() {
 		return algorithmType;
@@ -162,6 +248,46 @@ public class AdminPageBean extends Util implements Serializable {
 
 	public void setAlgorithmType(String algorithmType) {
 		this.algorithmType = algorithmType;
+	}
+
+	public List<StatisticsItem> getMostCommonMistakes() {
+		return mostCommonMistakes;
+	}
+
+	public void setMostCommonMistakes(List<StatisticsItem> mostCommonMistakes) {
+		this.mostCommonMistakes = mostCommonMistakes;
+	}
+
+	public String getMatchedWord() {
+		return matchedWord;
+	}
+
+	public void setMatchedWord(String matchedWord) {
+		this.matchedWord = matchedWord;
+	}
+
+	public List<StatisticsItem> getTopTenMistakes() {
+		return topTenMistakes;
+	}
+
+	public void setTopTenMistakes(List<StatisticsItem> topTenMistakes) {
+		this.topTenMistakes = topTenMistakes;
+	}
+
+	public String getSearchedWord() {
+		return searchedWord;
+	}
+
+	public void setSearchedWord(String searchedWord) {
+		this.searchedWord = searchedWord;
+	}
+
+	public List<DictionaryItem> getWordList() {
+		return wordList;
+	}
+
+	public void setWordList(List<DictionaryItem> wordList) {
+		this.wordList = wordList;
 	}
 
 }
