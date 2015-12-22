@@ -50,9 +50,7 @@ public class LoginBean extends Util {
 
             return "home";
         } else {
-
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Invalid Login!", "Please Try Again!"));
-
             return "login";
         }
     }

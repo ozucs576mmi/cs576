@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.agile.asyoumean.model.externalmodel.User;
-import com.agile.asyoumean.util.Constants;
 
 public class UserDAO extends DAO {
 

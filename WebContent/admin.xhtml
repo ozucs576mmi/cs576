@@ -51,9 +51,9 @@
                                     selection = "#{adminPageBean.selectedWord}"
                                     selectionMode = "single"
                                     rowKey = "#{dic.word}" rows="10"
-                         paginator="true"
-                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         rowsPerPageTemplate="5,10,15">
+                                    paginator="true"
+                                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                    rowsPerPageTemplate="5,10,15">
                                     <p:ajax event = "rowSelect" listener = "#{adminPageBean.onRowSelect}" update = ":form"/>
                                     <p:ajax event = "rowUnselect" listener = "#{adminPageBean.onRowUnselect}" update = ":form"/>
                                     <p:column headerText = "Word" filterBy = "#{dic.word}" filterMatchMode = "contains">

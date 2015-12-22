@@ -8,9 +8,13 @@ import java.util.List;
 import org.junit.Test;
 
 import com.agile.asyoumean.dao.CoreDAO;
+<<<<<<< HEAD
 import com.agile.asyoumean.model.externalmodel.DictionaryItem;
 import com.agile.asyoumean.model.externalmodel.MatchRatioItem;
 import com.agile.asyoumean.model.externalmodel.StatisticsItem;
+=======
+import com.agile.asyoumean.model.externalmodel.*;
+>>>>>>> origin/master
 
 
 public class DAOServicesTest {
@@ -63,9 +67,15 @@ public class DAOServicesTest {
 	   @Test
 	   public void searchWordTest() {
 		   
+<<<<<<< HEAD
 		   List<DictionaryItem> testList = CoreDAO.getInstance().searchWord("turkcell");
 		    
 		    assertTrue(testList.get(0).getWord().toUpperCase().equals("TURKCELL"));
+=======
+		    DictionaryWordItem testList = CoreDAO.getInstance().searchWord("turkcell");
+		    
+		    assertTrue(testList.getWord().toUpperCase().equals("TURKCELL"));
+>>>>>>> origin/master
    
 	   }
 	   
