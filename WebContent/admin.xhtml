@@ -1,190 +1,329 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html
-    xmlns = "http://www.w3.org/1999/xhtml"
-    xmlns:h = "http://java.sun.com/jsf/html"
-    xmlns:f = "http://java.sun.com/jsf/core"
-    xmlns:p = "http://primefaces.org/ui"
-    xml:lang = "tr"
-    lang = "tr">
-    <f:view locale = "tr">
-        <h:head>
-            <meta http-equiv = "Content-Type" content = "text/html; charset=UTF-8"/>
-            <title>Test</title>
-            <style type = "text/css"></style>
-            <script type = "text/javascript"></script>
-        </h:head>
-        <h:body style = "background: #E0F2F7 !important;">
-            <h:form id = "form">
-                <p:growl id = "msgs" showDetail = "true"/>
-                <h3 style = "margin-top:0">Admin Panel</h3>
-                <p:tabView>
-                    <p:tab title = "Dictionary">
-                        <p:panelGrid columns = "2" cellpadding = "10">
-                            <p:column>
-                                <p:row>
-                                    <p:outputLabel for = "wordn" value = "New Word: "/>
-                                    <p:inputText id = "wordn" value = "#{adminPageBean.newWord.word}"/>
-                                </p:row>
-                                <br></br>
-                                <p:row>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xml:lang="tr" lang="tr">
+<f:view locale="tr">
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Test</title>
+		<script type="text/javascript"></script>
+		<h:outputScript name="jquery/jquery-plugins.js" library="primefaces"/>
+		<style type="text/css">
+.ui-widget,.ui-widget .ui-widget {
+	font-size: 90% !important;
+}
+</style>
+	</h:head>
+	<h:body style="background: #E0F2F7 !important;">
+		<h:form id="form">
+			<p:growl id="msgs" showDetail="true" />
+			<h3 style="margin-top: 0">Admin Panel</h3>
+			<p:tabView  id="aa">
+				<p:tab id="dictionarytab" title="Dictionary">
+					<p:panelGrid id="dictionaryPanelgrid" columns="2" cellpadding="10">
+						<p:column>
+							<p:row>
+								<p:outputLabel for="wordn" value="New Word: " />
+								<p:inputText id="wordn" value="#{adminPageBean.newWord.word}" />
+							</p:row>
+							<br></br>
+							<!-- <p:row>
                                     <p:outputLabel for = "wordxn" value = "Exact_Match "/>
                                     <p:inputText id = "wordxn" value = "#{adminPageBean.newWord.exactMatch}"/>
                                     <br></br>
-                                </p:row>
-                                <p:row>
-                                    <p:commandButton value = "Add Word" action = "#{adminPageBean.addItem}" update = ":form"/>
-                                </p:row>
-                                <p:commandButton value = "Cache refresh" id = "CallWsButton"  action = "#{SearchPageBean.cacheRefresh}" oncomplete="infoDialogWidgetForCache.show()"/>
-                            </p:column>
-                            <p:column> 	
-                                <p:contextMenu for = "words">
-                                    <p:menuitem
-                                        value = "Delete"
-                                        update = "words"
-                                        icon = "ui-icon-close"
-                                        actionListener = "#{adminPageBean.removeItem}"/>
-                                </p:contextMenu>
-                                <p:dataTable
-                                    var = "dic"
-                                    value = "#{adminPageBean.dictionary}"
-                                    id = "words"
-                                    selection = "#{adminPageBean.selectedWord}"
-                                    selectionMode = "single"
-                                    rowKey = "#{dic.word}" rows="10"
-                                    paginator="true"
-                                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                    rowsPerPageTemplate="5,10,15">
-                                    <p:ajax event = "rowSelect" listener = "#{adminPageBean.onRowSelect}" update = ":form"/>
-                                    <p:ajax event = "rowUnselect" listener = "#{adminPageBean.onRowUnselect}" update = ":form"/>
-                                    <p:column headerText = "Word" filterBy = "#{dic.word}" filterMatchMode = "contains">
-                                        <h:outputText value = "#{dic.word}"/>
-                                    </p:column>
-                                    <p:column headerText = "Exact_Match" filterBy = "#{dic.exactMatch}" filterMatchMode = "contains">
-                                        <h:outputText value = "#{dic.exactMatch}"/>
-                                    </p:column>
-                                    <p:column>
-                                        <p:commandButton
-                                            icon = "ui-icon-trash"
-                                            title = "Delete this word"
-                                            ajax = "false"
-                                            actionListener = "#{adminPageBean.removeItem}"
-                                            update = "words"/>
-                                    </p:column>
-                                </p:dataTable>
-                            </p:column>
-                        </p:panelGrid>
-                        <a href = "index.xhtml">Back to main</a>
-                    </p:tab>
-                    <p:tab title = "Algorithm Selection">
-                        <p:panelGrid columns = "2" cellpadding = "10">
-                            <p:panelGrid columns = "2" style = "margin-bottom:10px" cellpadding = "5">
-                                <p:outputLabel for = "algorithm" value = "Algoritma Seciniz:"/>
-                                <p:selectOneRadio id = "algorithm" value="#{adminPageBean.algorithmType}">
-                                    <f:selectItem itemLabel = "Jaro Winkler" itemValue = "JaroWinkler" selected = "true"/>
-                                    <f:selectItem itemLabel = "Other algorithm" itemValue = "Other"/>
-                                </p:selectOneRadio>
-                            </p:panelGrid>
-                        </p:panelGrid>
-                        <a href = "index.xhtml">Back to main</a>
-                    </p:tab>
-                           <p:tab title = "Graph">
-                        <h:form id = "form">
-                            
-                            <p:lineChart    value="#{lineChartBean.model}" legendPosition="e" />
-                            
-                            
-                            <a href = "index.xhtml">Back to main</a>
-                        </h:form>
-                    </p:tab>
-                    <p:tab title = "User Administration" rendered = "#{adminPageBean.superUser}">
-                        <h:form id = "User">
-                            <p:panelGrid columns = "2" cellpadding = "10">
-                                <p:column>
-                                    <p:row>
-                                        <p:outputLabel for = "wordn" value = " User Name: "/>
-                                        <p:inputText id = "wordn" value = "#{adminPageBean.newWord.word}"/>
-                                    </p:row>
-                                    <br></br>
-                                    <p:row>
-                                        <p:outputLabel for = "wordxn" value = "Password "/>
-                                        <p:inputText id = "wordxn" value = "#{adminPageBean.newWord.exactMatch}"/>
-                                        <br></br>
-                                    </p:row>
-                                    <p:row>
-                                        <p:commandButton value = "Add User" action = "#{adminPageBean.addItem}" update = ":form"/>
-                                    </p:row>
-                                </p:column>
-                                <p:column>
-                                    <p:contextMenu for = "usr">
-                                        <p:menuitem
-                                            value = "Delete"
-                                            update = "usr"
-                                            icon = "ui-icon-close"
-                                            actionListener = "#{adminPageBean.removeItem}"/>
-                                    </p:contextMenu>
-                                    <p:dataTable
-                                        var = "usr"
-                                        value = "#{adminPageBean.users}"
-                                        id = "usr"
-                                        selection = "#{adminPageBean.selectedUser}"
-                                        selectionMode = "single"
-                                        rowKey = "#{usr.userName}">
-                                        <p:ajax event = "rowSelect" listener = "#{adminPageBean.onRowSelectUser}" update = "usr"/>
-                                        <p:ajax event = "rowUnselect" listener = "#{adminPageBean.onRowUnselectUser}" update = "usr"/>
-                                        <p:column headerText = "Username" filterBy = "#{usr.UserName}" filterMatchMode = "contains">
-                                            <h:outputText value = "#{usr.userName}"/>
-                                        </p:column>
-                                        <p:column
-                                            headerText = "Password"
-                                            filterBy = "#{usr.password}"
-                                            filterMatchMode = "contains"
-                                            rendered = "false">
-                                            <h:outputText value = "#{usr.password}"/>
-                                        </p:column>
-                                        <p:column>
-                                            <p:commandButton
-                                                icon = "ui-icon-trash"
-                                                title = "Delete this user"
-                                                ajax = "false"
-                                                update = "usr"/>
-                                            -->
-                                        </p:column>
-                                    </p:dataTable>
-                                </p:column>
-                            </p:panelGrid>
-                            <a href = "index.xhtml">Back to main</a>
-                        </h:form>
-                    </p:tab>
-                   
-                </p:tabView>
-                
-                 <p:dialog
-                    styleClass = "infoDialog"
-                    width = "450"
-                    height = "100"
-                    header = ""
-                    widgetVar = "infoDialogWidgetForCache"
-                    modal = "true"
-                    position = "150,100"
-                    resizable = "false"
-                    id = "infoDialogWidgetForCache">
-                    <h:panelGrid id = "modalPanel" columns = "1">
-                        <h:outputFormat
-                            id = "resultMessageOutputId"
-                            value = "Cache Refresh is successful...!"
-                            escape = "false"
-                            style = "font-weight:bold"/>
-                    </h:panelGrid>
-                    <h:panelGrid id = "modalClosePanel" columns = "1">
-                        <p:commandButton
-                            styleClass = "button-type3"
-                            id = "CloseModel"
-                            style = "margin-left:150px;line-height:5px;"
-                            value = "Close"
-                            oncomplete = "infoDialogWidgetForCache.hide()"/>
-                    </h:panelGrid>
-                </p:dialog>
-            </h:form>
-        </h:body>
-    </f:view>
+                                </p:row> -->
+							<p:row>
+								<br></br>
+								<p:commandButton id="addWordBtn" style="margin-left:20px"
+									value="Add Word" action="#{adminPageBean.addItem}"
+									update=":form dictionarytab dictionaryPanelgrid words" />
+							</p:row>
+							<p:commandButton style="margin-left:10px" value="Cache refresh"
+								id="CashrefreshButton" action="#{SearchPageBean.cacheRefresh}"
+								oncomplete="infoDialogWidgetForCache.show()"
+								update=":form words" />
+						</p:column>
+						<p:column>
+							<p:contextMenu for="words">
+								<p:menuitem value="Delete"
+									update=":form dictionarytab dictionaryPanelgrid words"
+									icon="ui-icon-close"
+									actionListener="#{adminPageBean.removeItem}" />
+							</p:contextMenu>
+							<p:row>
+												<p:outputLabel for="searchedWordId" value=" Word : " />
+												<p:inputText id="searchedWordId"
+													value="#{adminPageBean.searchedWord}" />
+											</p:row>
+											
+											<p:row>
+												
+												<p:commandButton id="dictionarySearchBtn"
+													style="margin-left:20px" value="Search"
+													action="#{adminPageBean.listDictionary}"
+													update=":form dictionarytab dictionaryPanelgrid words"/>
+											</p:row>
+											<p:commandButton style="margin-left:10px" value="Clear"
+												id="ClearLog2SearchBtn" action="#{adminPageBean.clearCommonMistakesSearch}"
+												update=":form dictionarytab dictionaryPanelgrid words" />
+							<p:dataTable var="dic" value="#{adminPageBean.wordList}"
+								id="words" selection="#{adminPageBean.selectedWord}"
+								selectionMode="single" rowKey="#{dic.word}" rows="10"
+								paginator="true" paginatorPosition="bottom"
+								paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="5,10,15,20" >
+
+								<p:ajax event="rowSelect"
+									listener="#{adminPageBean.onRowSelect}" update=":form" />
+								<p:ajax event="rowUnselect"
+									listener="#{adminPageBean.onRowUnselect}" update=":form" />
+								<p:column headerText="Word" filterBy="#{dic.word}"
+									filterMatchMode="contains">
+									<h:outputText value="#{dic.word}" />
+								</p:column>
+								<p:column headerText="Exact_Match" filterBy="#{dic.exactMatch}"
+									filterMatchMode="contains">
+									<h:outputText value="#{dic.exactMatch}" />
+								</p:column>
+								<p:column>
+									<p:commandButton icon="ui-icon-trash" title="Delete this word"
+										ajax="false" actionListener="#{adminPageBean.removeItem}"
+										update=":form dictionarytab dictionaryPanelgrid words" />
+								</p:column>
+							</p:dataTable>
+
+							<p:blockUI block="dictionaryPanelgrid"
+								trigger="CashrefreshButton">
+       							 CASHREFRESH INPROGRESS..<br />
+								<p:graphicImage value="/resources/images/progress_bar.gif" />
+							</p:blockUI>
+							<p:blockUI block="dictionaryPanelgrid" trigger="addWordBtn">
+       							 NEW WORD ADDITION INPROGRESS..<br />
+								<p:graphicImage value="/resources/images/progress_bar.gif" />
+							</p:blockUI>
+
+							<p:blockUI block="words" trigger="words">
+       							 WORDS OF DICTIONARY LOADING..<br />
+								<p:graphicImage value="/resources/images/progress_bar.gif" />
+							</p:blockUI>
+							<p:blockUI block="words" trigger="dictionarySearchBtn">
+       							 WORD SEARCHING..<br />
+								<p:graphicImage value="/resources/images/progress_bar.gif" />
+							</p:blockUI>
+						</p:column>
+					</p:panelGrid>
+					<a href="index.xhtml">Back to main</a>
+				</p:tab>
+			
+				<p:tab title="Graph">
+					<h:form id="form">
+			
+				<p:chart type="line" model="#{lineChartBean.lineModel}" style="height:300px;"/>
+					
+
+
+						<a href="index.xhtml">Back to main</a>
+					</h:form>
+				</p:tab>
+
+				<p:tab title="Analysis" id="analysisTabId" >
+					
+							<p:tabView id="analysTabView" orientation="left" style="height: 400px;!important'" >
+							<p:ajax event="tabChange" listener="#{adminPageBean.tabchangelistenerForAnalysis}" />
+								<p:tab title="Which made ​​incorrect calls for this word?" style="height: 350px; width: 860px;margin-bottom:0px">
+									<h:panelGrid id="log1panelGrid" columns="1" cellpadding="10" style="height: 350px; width: 860px;">
+										<p:column style="width:30%;">
+											<p:row>
+												<p:outputLabel for="matchedWordId" value=" Matched Word : " />
+												<p:inputText id="matchedWordId"
+													value="#{adminPageBean.matchedWord}" />
+											</p:row>
+											
+											<p:row>
+												
+												<p:commandButton id="log1ListeleBtn"
+													style="margin-left:20px" value="Search"
+													action="#{adminPageBean.listCommonMistakes}"
+													update=":form"/>
+											</p:row>
+											<p:commandButton style="margin-left:10px" value="Clear"
+												id="ClearLog1SearchBtn" action="#{adminPageBean.clearCommonMistakesSearch}"
+												update=":form" />
+									
+									 	<!-- <p:column style="width:70%;">  --> 
+										<p:dataTable var="log1" style="margin-top:15px"
+											value="#{adminPageBean.mostCommonMistakes}"
+											id="log1gDataTable" rowKey="#{log1.givenWord}" rows="5"
+											paginator="true" paginatorPosition="bottom" 
+											paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+											rowsPerPageTemplate="5,10,15" >
+											<p:column headerText="GivenWord" filterBy="#{log1.givenWord}"
+												filterMatchMode="contains">
+												<h:outputText value="#{log1.givenWord}" />
+											</p:column>
+											<p:column headerText="GivenWordCount"
+												filterBy="#{log1.givenWordCount}" filterMatchMode="contains">
+												<h:outputText value="#{log1.givenWordCount}" />
+											</p:column>
+
+										</p:dataTable>
+										<p:blockUI block="log1gDataTable" trigger="log1ListeleBtn">
+       							 LOADING INPROGRESS..<br />
+								<p:graphicImage value="/resources/images/progress_bar.gif" />
+							</p:blockUI>
+							<p:blockUI block="log1gDataTable" trigger="log1gDataTable">
+       							 LOADING INPROGRESS..<br />
+								<p:graphicImage value="/resources/images/progress_bar.gif" />
+							</p:blockUI>
+											</p:column>
+										 <!-- </p:column>  -->
+									</h:panelGrid>
+								</p:tab>
+								<p:tab title="Most searched wrong words"  id="mostSearched" >
+								
+									<h:panelGrid id="log2panelGrid" columns="1" cellpadding="10" style="height: 350px; width: 860px;">
+									<p:contextMenu for="log2gDataTable">
+								<p:menuitem value="AddExactMatchList"
+									
+									icon="ui-icon-close"
+									actionListener="#{adminPageBean.addExactMatch}" />
+							</p:contextMenu>
+										<p:dataTable var="log2" style="margin-top:15px"
+										selection="#{adminPageBean.selectedStatisticsItem}"
+										selectionMode="single" 
+											value="#{adminPageBean.topTenMistakes}"
+											id="log2gDataTable" rowKey="#{log2.givenWord}" rows="5"
+											paginator="true" paginatorPosition="bottom" 
+											paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+											rowsPerPageTemplate="5,10,15" >
+											<p:column headerText="MatchedWord" filterBy="#{log2.matchedWord}"
+												filterMatchMode="contains">
+												<h:outputText value="#{log2.matchedWord}" />
+											</p:column>
+											<p:column headerText="MatchedWordCount">
+												<h:outputText value="#{log2.matchedWordCount}" />
+												</p:column>
+												
+												<p:column headerText="GivenWord"
+												filterBy="#{log2.givenWord}" filterMatchMode="contains">
+												<h:outputText value="#{log2.givenWord}" />
+												</p:column>
+												<p:column headerText="GivenWordCount"
+												filterBy="#{log2.givenWordCount}" filterMatchMode="contains">
+												<h:outputText value="#{log2.givenWordCount}" />
+											</p:column>
+											<p:column headerText="Göster"   >
+												
+												<p:commandLink action="#{lineChartBean.barGoster}" 
+                                                            update=":form:aa:analysTabView:barr"
+                                                            style="margin-left:10px" value="Show Details">
+                                                      <f:param name="log2Param" value="#{log2.matchedWord}"></f:param>      
+                                                </p:commandLink>
+												
+											</p:column>
+
+										</p:dataTable>
+										
+										
+										
+										
+										 
+												
+												<p:commandButton id="RefreshLog2DataTableBtn"
+													style="margin-left:5px; margin-bottom:300px" value="Refresh Results"
+													action="#{adminPageBean.listTopTenMistakes}"
+													update=":form"/>
+										 
+											
+												
+											
+											
+											
+											<p:blockUI block="log2gDataTable" trigger="RefreshLog2DataTableBtn">
+       							 LOADING INPROGRESS..<br />
+								<p:graphicImage value="/resources/images/progress_bar.gif" />
+							</p:blockUI>
+											
+									</h:panelGrid>
+									<p:chart id="barr" type="bar" model="#{lineChartBean.barModel}" style="height:300px; width:1200px; align-left:5px"/>
+								</p:tab>
+							</p:tabView>
+						<a href="index.xhtml">Back to main</a>
+					
+				</p:tab>
+				<p:tab title="User Administration"
+					rendered="#{adminPageBean.superUser}">
+					<h:form id="User">
+						<p:panelGrid columns="2" cellpadding="10">
+							<p:column>
+								<p:row>
+									<p:outputLabel for="wordn" value=" User Name: " />
+									<p:inputText id="wordn" value="#{adminPageBean.newWord.word}" />
+								</p:row>
+								<br></br>
+								<p:row>
+									<p:outputLabel for="wordxn" value="Password      :" />
+									<p:inputText id="wordxn"
+										value="#{adminPageBean.newWord.exactMatch}"
+										style=" margin-left:11px" />
+									<br></br>
+								</p:row>
+								<br></br>
+								<p:row>
+									<p:commandButton style="margin-left:80px" value="Add User"
+										action="#{adminPageBean.addItem}" update=":form" />
+								</p:row>
+							</p:column>
+							<p:column>
+								<p:contextMenu for="usr">
+									<p:menuitem value="Delete" update="usr" icon="ui-icon-close"
+										actionListener="#{adminPageBean.removeItem}" />
+								</p:contextMenu>
+								<p:dataTable var="usr" value="#{adminPageBean.users}" id="usr"
+									selection="#{adminPageBean.selectedUser}"
+									selectionMode="single" rowKey="#{usr.userName}">
+									<p:ajax event="rowSelect"
+										listener="#{adminPageBean.onRowSelectUser}" update="usr" />
+									<p:ajax event="rowUnselect"
+										listener="#{adminPageBean.onRowUnselectUser}" update="usr" />
+									<p:column headerText="Username" filterBy="#{usr.UserName}"
+										filterMatchMode="contains">
+										<h:outputText value="#{usr.userName}" />
+									</p:column>
+									<p:column headerText="Password" filterBy="#{usr.password}"
+										filterMatchMode="contains" rendered="false">
+										<h:outputText value="#{usr.password}" />
+									</p:column>
+									<p:column>
+										<p:commandButton icon="ui-icon-trash" title="Delete this user"
+											ajax="false" update="usr" />
+
+									</p:column>
+								</p:dataTable>
+							</p:column>
+						</p:panelGrid>
+						<a href="index.xhtml">Back to main</a>
+					</h:form>
+				</p:tab>
+
+			</p:tabView>
+
+			<p:dialog styleClass="infoDialog" width="450" height="100" header=""
+				widgetVar="infoDialogWidgetForCache" modal="true" position="150,100"
+				resizable="false" id="infoDialogWidgetForCache">
+				<h:panelGrid id="modalPanel" columns="1">
+					<h:outputFormat id="resultMessageOutputId"
+						value="Cache Refresh is successful...!" escape="false"
+						style="font-weight:bold" />
+				</h:panelGrid>
+				<h:panelGrid id="modalClosePanel" columns="1">
+					<p:commandButton styleClass="button-type3" id="CloseModel"
+						style="margin-left:150px;line-height:5px;" value="Close"
+						oncomplete="infoDialogWidgetForCache.hide()" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+	</h:body>
+</f:view>
 </html>

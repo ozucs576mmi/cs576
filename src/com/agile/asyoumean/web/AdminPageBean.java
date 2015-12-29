@@ -39,6 +39,7 @@ public class AdminPageBean extends Util implements Serializable {
 	private List<StatisticsItem> mostCommonMistakes;
 	private List<StatisticsItem> topTenMistakes;
 	List<DictionaryItem> wordList;
+	private StatisticsItem selectedStatisticsItem;
 
 	@PostConstruct
 	public void postConstruct() {
@@ -128,6 +129,8 @@ public class AdminPageBean extends Util implements Serializable {
 	}
 	
 	
+	
+	
 
 	public void onRowSelect(SelectEvent event) {
 
@@ -149,6 +152,29 @@ public class AdminPageBean extends Util implements Serializable {
 
 		selectedUser = null;
 
+	}
+	
+	public void onRowSelectStatisticsItem(SelectEvent event) {
+
+		selectedStatisticsItem = (StatisticsItem) event.getObject();
+	}
+
+	public void onRowUnselectStatisticsItem(UnselectEvent event) {
+
+		selectedStatisticsItem = null;
+
+	}
+	
+	
+	public void addExactMatch(){
+		
+		CoreDAO.getInstance().addExactMatch(selectedStatisticsItem.getMatchedWord(), selectedStatisticsItem.getGivenWord());
+		
+		FacesContext.getCurrentInstance().addMessage(
+				null,
+				new FacesMessage(FacesMessage.SEVERITY_WARN,
+						"Exactmatch Added", "Exactmatch Added!"));
+		
 	}
 
 	public void addItem() {
@@ -288,6 +314,14 @@ public class AdminPageBean extends Util implements Serializable {
 
 	public void setWordList(List<DictionaryItem> wordList) {
 		this.wordList = wordList;
+	}
+
+	public StatisticsItem getSelectedStatisticsItem() {
+		return selectedStatisticsItem;
+	}
+
+	public void setSelectedStatisticsItem(StatisticsItem selectedStatisticsItem) {
+		this.selectedStatisticsItem = selectedStatisticsItem;
 	}
 
 }
