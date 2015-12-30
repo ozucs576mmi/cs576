@@ -166,15 +166,42 @@ public class AdminPageBean extends Util implements Serializable {
 	}
 	
 	
-	public void addExactMatch(){
-		
-		CoreDAO.getInstance().addExactMatch(selectedStatisticsItem.getMatchedWord(), selectedStatisticsItem.getGivenWord());
-		
-		FacesContext.getCurrentInstance().addMessage(
-				null,
-				new FacesMessage(FacesMessage.SEVERITY_WARN,
-						"Exactmatch Added", "Exactmatch Added!"));
-		
+	public void addExactMatch() {
+
+		List<DictionaryItem> existedWord = CoreDAO.getInstance().searchWord(
+				selectedStatisticsItem.getMatchedWord());
+
+		if (!existedWord.isEmpty()) {
+			for (DictionaryItem words : existedWord) {
+
+				if (words.getWord().equalsIgnoreCase(
+						selectedStatisticsItem.getMatchedWord())
+						&& words.getExactMatch().equalsIgnoreCase(
+								selectedStatisticsItem.getGivenWord())) {
+
+					FacesContext.getCurrentInstance().addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_INFO,
+									"Exactmatch Already Added",
+									"Exactmatch Already Added!"));
+					break;
+
+				} else {
+
+					CoreDAO.getInstance().addExactMatch(
+							selectedStatisticsItem.getMatchedWord(),
+							selectedStatisticsItem.getGivenWord());
+
+					FacesContext.getCurrentInstance().addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_INFO,
+									"Exactmatch Added", "Exactmatch Added!"));
+
+				}
+
+			}
+		}
+
 	}
 
 	public void addItem() {
